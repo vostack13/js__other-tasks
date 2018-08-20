@@ -104,8 +104,18 @@
         }
         -->
 
+        <style>
+            #myDiv {
+                position: absolute;
+                width: 100px;
+                height: 50px;
+                background-color: blue;
+            }
+        </style>
+
         <button id="btnCreate"> Добавить </button>
         <button id="btnDelete"> Удалить </button>
+        <div id="myDiv"></div>
     
     <script>
 
@@ -136,12 +146,12 @@
                         if (mutation.addedNodes.length !== 0){
                             obj.type = 'insert'
                             obj.nodes = Array.from(mutation.addedNodes)
-                            fn(obj)
+                            // fn(obj)
                             // console.log(obj.nodes)
                         } else  {
                             obj.type = 'remove'
                             obj.nodes = Array.from(mutation.removedNodes)
-                            fn(obj)
+                            // fn(obj)
                             // console.log(obj.nodes)
                         }
                     }
@@ -158,8 +168,35 @@
         observeChildNodes(document.body)
         
 
+        function addListeners(target) {
 
+            let dragging = false,
+                posX,
+                posY
+
+            target.addEventListener('mousedown', (e) => {
+                dragging = true
+                
+                posY = e.offsetY
+                posX = e.offsetX               
+            })
+            
+            document.addEventListener('mousemove', (e) => {
+                if (dragging) {
+                    target.style.top = e.clientY -  posY + 'px'
+                    target.style.left = e.clientX - posX + 'px'
+                }
+            })
+
+            target.addEventListener('mouseup', (e) => {
+                dragging = false
+                console.log('end')
+            })
+        }
+
+        var myDiv = document.getElementById('myDiv')
       
+        addListeners(myDiv)
     
     </script>
   
