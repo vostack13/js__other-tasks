@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Promise</title>
+</head>
+<body>
+
+    <button id="loadFile">Загрузить</button>
+
+    <div id="result"></div>
+    <script>
+        function delay(ms) {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(),ms)
+                console.log('Выполнение delay')
+            })
+        }
+
+        console.log('Стартуем')
+
+        delay(1000)
+            .then(() => delay(2000))
+            .then(() => delay(2000))
+        
+        console.log('Закончили')
+
+        async function fn() {
+            console.log('до')
+            await delay(1000)
+            await delay(1000)
+            await delay(1000)
+            console.log('после')
+        }
+
+        // fn()
+            
+    </script>
+</body>
+</html>
