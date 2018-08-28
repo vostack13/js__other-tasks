@@ -57,6 +57,11 @@
             const event = new CustomEvent('my-event')
             div.dispatchEvent(event)
         })
+        
+        div.addEventListener('my-event', () => {
+            console.log('Выполнение my event')
+        })
+         
 
 
 
