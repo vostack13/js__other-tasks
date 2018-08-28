@@ -9,31 +9,80 @@
 <body>
 
     <button id="loadFile">Загрузить</button>
+    <button id="addLi">Добавить li</button>
+    <button id="button">Добавить li</button>
+    <div id="div">Добавить li</div>
+
+    <ul id="list"></ul>
 
     <div id="result"></div>
     <script>
-        function delay(ms) {
-            return new Promise(resolve => {
-                setTimeout(() => resolve(),ms)
-                console.log('Выполнение delay')
-            })
-        }
 
-        console.log('Стартуем')
-
-        delay(1000)
-            .then(() => delay(2000))
-            .then(() => delay(2000))
+        //document.Fragment
         
-        console.log('Закончили')
+        const fragment = document.createDocumentFragment()
+        const list = document.querySelector('#list')
+        const a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
 
-        async function fn() {
-            console.log('до')
-            await delay(1000)
-            await delay(1000)
-            await delay(1000)
-            console.log('после')
+        for (const item of a) {
+            const li = document.createElement('li')
+            li.textContent = item
+            fragment.appendChild(li);
         }
+
+        list.appendChild(fragment);
+        ///////////////////
+
+        //Делегирование
+
+        document.body.addEventListener('click', (event) => {
+            if (event.target.tagName === 'LI') {
+                list.removeChild(event.target)
+            }
+        })
+
+        const buttonAddLi = document.querySelector('#addLi')
+        let i = 0;
+        
+        buttonAddLi.addEventListener('click', () => {
+            const newli = document.createElement('li')
+            newli.textContent = i++;
+            list.appendChild(newli)
+        })
+
+        const button = document.querySelector('#button')
+        const div = document.querySelector('#div')
+
+        button.addEventListener('click', () => {
+            const event = new CustomEvent('my-event')
+            div.dispatchEvent(event)
+        })
+
+
+
+
+        // function delay(ms) {
+        //     return new Promise(resolve => {
+        //         setTimeout(() => resolve(),ms)
+        //         console.log('Выполнение delay')
+        //     })
+        // }
+
+        // console.log('Стартуем')
+
+        // delay(1000)
+        //     .then(() => delay(2000))
+        //     .then(() => delay(2000))
+        
+        // console.log('Закончили')
+
+        // async function fn() {
+        //     console.log('до')
+        //     await delay(1000)
+        //     await delay(1000)
+        //     await delay(1000)
+        //     console.log('после')
+        // }
 
         // fn()
             
