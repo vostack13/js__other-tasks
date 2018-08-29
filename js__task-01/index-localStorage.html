@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Browser API</title>
+</head>
+<body>
+    <input type="file" id="photoInput">
+    <div>
+        <img src="" alt="" id="theImage">
+    </div>
+
+    <script>
+        let a = JSON.stringify({name:01})
+        console.log(a);
+        console.log(JSON.parse(a));
+
+        //Загрузка файлов в браузер
+        const photoInput = document.querySelector('#photoInput')
+        const theImage = document.querySelector('#theImage')
+        const fileReader = new FileReader()
+
+        fileReader.addEventListener('load', () => {
+            theImage.src = fileReader.result
+        })
+
+        photoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0]
+            // const [file] = e.target.files //тоже самое в ES6 (деструктуризация)
+
+            if (file) {
+                
+                // проверка на размер файла (не более 300 кБайт)
+                if (file.size > 300 * 1024) {
+                    alert('слишком большой файл')
+                } else {
+                    fileReader.readAsDataURL(file)
+                }
+            }
+        })
+    </script>
+</body>
+</html>
