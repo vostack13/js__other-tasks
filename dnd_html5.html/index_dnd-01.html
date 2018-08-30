@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Drag&Drop | HTML5</title>
+    <style>
+        .body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 700;
+            color: #565656;
+        }
+
+        .container {
+            margin: 0 auto;
+            width: 80%;
+            display: flex;
+            /* flex-wrap: wrap; */
+        }
+
+        .source, .target {
+            display: flex;
+            align-items: flex-start;
+            align-content: flex-start;
+            flex-wrap: wrap;
+            border: 3px dashed #b3b3b3;
+            flex: 8
+        }
+
+        .new-item, .item {
+            margin: 16px;
+            padding: 1em 1.3em;
+            border-radius: 12px;
+        }
+
+        .new-item {
+            cursor: pointer;
+            border: 3px dashed #777777;
+        }
+
+        .item {
+            cursor: move;
+            border: 3px dashed #783db3;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="source">
+            <div class="new-item">+</div>
+        </div>
+
+        <div class="target">
+            <div class="new-item">+</div>
+        </div>
+    </div>
+
+    <script>
+        const source = document.querySelector('.source');
+        const target = document.querySelector('.target');
+        let counter = 0;
+        
+        makeDnD([source, target])
+
+        document.addEventListener('click', e => {
+            if (e.target.classList.contains('new-item')) {
+                const newItem = createItem();
+                const parent = e.target.parentNode;
+
+                parent.insertBefore(newItem, parent.lastElementChild)
+            }
+        })
+
+        function createItem() {
+            const newDiv = document.createElement('div')
+
+            newDiv.textContent = counter++;
+            newDiv.classList.add('item');
+            
+            // Устанавливает возможность перетаскивать элемент
+            newDiv.draggable = true;
+
+            return newDiv;
+        }
+
+        function makeDnD (zones) {
+            let currentDrag;
+
+            zones.forEach(zone => {
+                zone.addEventListener('dragstart', (e) => {
+                    currentDrag  = {source: zone, node: e.target};
+                    console.log('start')
+                });
+
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                })
+
+                zone.addEventListener('drop', (e) => {
+                    if (currentDrag) {
+                        e.preventDefault()
+
+                        if (currentDrag.source !== zone) {
+                            if (e.target.classList.contains('item')) {
+                                zone.insertBefore(currentDrag.node, e.target.nextElementSibling)
+                            } else {
+                                zone.insertBefore(currentDrag.node, zone.lastElementChild)
+                            }
+                        }
+
+                        currentDrag = null
+                    }
+                })
+            });
+        }
+
+    </script>
+</body>
+</html>
