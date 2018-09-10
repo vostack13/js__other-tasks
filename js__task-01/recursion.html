@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Рекурсия</title>
+</head>
+<body>
+    <script> 
+
+        // ----- Поиск нужного класса в дереве элемента
+        function fn(node, needClass) {
+            if (node.classList.contains(needClass)) {
+                return node
+            }
+
+            for (const el of node.children) {
+                const found = fn(el);
+
+                if (found) {
+                    return found
+                }
+            }
+
+            return null
+        }
+
+        const result = fn(document.body, 'my-class')
+
+        // ----- Вложить один промис в другой
+        const p = new Promise(resolve => {
+            setTimeout(() => {
+                resolve()
+            }, 3000);
+        })
+
+        p.then(() => {
+            // Чтобы слудующий вызов .then дожидался этот вложенный промис,
+            // нужно его результат вернуть в текущий .then с помошью return.
+            // Если не указать return, тогда следущие вызовы then
+            // не будут знать о текущем .then и будут выполняться не дожидаясь
+            return new Promise(resolve => {
+                // some code ...
+            })
+        }).then(() => {
+            // some code ...
+        })
+    </script>
+</body>
+</html>
