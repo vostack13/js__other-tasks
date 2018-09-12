@@ -64,46 +64,46 @@ new Promise(resolve => ymaps.ready(resolve)) // ждем загрузку кар
     .then(() => vkInit())  // авторизация источника данных
     .then(() => vkApi('friends.get', {fields: 'city,country'}))  // получаем список записей
     .then((friends => {
-        console.log(friends)
+        // console.log(friends)
         myMap = new ymaps.Map('map', {
             center: [55.76, 37.64],  // Москва
             zoom: 5
         }, {
             searchControlProvider: 'yandex#search'
         });
-        clusterer = new ymaps.Clusterer({
-            present: 'islands#invertedVioletClusterIcons',
-            clusterDisableClickZoom: true,
-            openBalloonOnClick: false
-        })
+        // clusterer = new ymaps.Clusterer({
+        //     present: 'islands#invertedVioletClusterIcons',
+        //     clusterDisableClickZoom: true,
+        //     openBalloonOnClick: false
+        // })
 
-        myMap.geoObjects.add(clusterer);
+        // myMap.geoObjects.add(clusterer);
 
         return friends.items
     })) // инициализация карты
-    .then (friends => {
-        const promises = friends
-            .filter(friend => friend.country && friend.country.title) // получить друзей, у которых есть страна
-            .map(friend => {
-                let parts = friend.country.title
+    // .then (friends => {
+    //     const promises = friends
+    //         .filter(friend => friend.country && friend.country.title) // получить друзей, у которых есть страна
+    //         .map(friend => {
+    //             let parts = friend.country.title
 
-                if (friend.city) {
-                    parts += ' ' + friend.city.title
-                }
+    //             if (friend.city) {
+    //                 parts += ' ' + friend.city.title
+    //             }
 
-                return parts;
-            }).map(geocode)
+    //             return parts;
+    //         }).map(geocode)
 
         
-        return Promise.all(promises) // Наша функция geocode внутри будет вызывать много своих промисов, поэтому
-        // с помошью return возвращаем ожидание возвращений всех промисов переменной promises
-    }) // получение списка адресов координат
-    .then(coords => {
-        // console.log(coords)
-        const placemarks = coords.map(coord => {
-            return new  ymaps.Placemark(coord, {}, {present: 'islands#blueHomeCircleIcon'})
-        })
+    //     return Promise.all(promises) // Наша функция geocode внутри будет вызывать много своих промисов, поэтому
+    //     // с помошью return возвращаем ожидание возвращений всех промисов переменной promises
+    // }) // получение списка адресов координат
+    // .then(coords => {
+    //     // console.log(coords)
+    //     const placemarks = coords.map(coord => {
+    //         return new  ymaps.Placemark(coord, {}, {present: 'islands#blueHomeCircleIcon'})
+    //     })
 
-        clusterer.add(placemarks)
-    }) // добавляем гео-объекты на карту
+    //     clusterer.add(placemarks)
+    // }) // добавляем гео-объекты на карту
     .catch(e => alert('Ошибка: ' + e.message))
